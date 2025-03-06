@@ -1,4 +1,3 @@
-//your JS code here. If required.
 function createPromise(promiseNumber) {
     const delay = Math.random() * 2000 + 1000; 
     return new Promise((resolve) => {
@@ -16,7 +15,6 @@ const promises = [
 
 const outputTable = document.getElementById("output");
 
-
 outputTable.innerHTML = '<tr><td colspan="2">Loading...</td></tr>';
 
 Promise.all(promises).then(results => {
@@ -27,13 +25,11 @@ Promise.all(promises).then(results => {
     results.forEach(result => {
         totalTime = Math.max(totalTime, result.time); 
         const row = document.createElement('tr');
-        row.innerHTML = `<td>Promise ${result.promiseNumber}</td><td>${result.time}</td>`;
+        row.innerHTML = `<td>Promise ${result.promiseNumber}</td><td>${result.time}</td>`; // Use backticks here
         outputTable.appendChild(row);
     });
 
-  
     const totalRow = document.createElement('tr');
-    totalRow.innerHTML = `<td>Total</td><td>${totalTime}</td>`;
+    totalRow.innerHTML = `<td>Total</td><td>${totalTime}</td>`; // Use backticks here
     outputTable.appendChild(totalRow);
 });
-
