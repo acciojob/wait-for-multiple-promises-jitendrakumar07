@@ -1,35 +1,42 @@
-function createPromise(promiseNumber) {
-    const delay = Math.random() * 2000 + 1000; 
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve({ promiseNumber, time: (delay / 1000).toFixed(3) }); 
-        }, delay);
+function getRandomDelay(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  const promise1 = new Promise(resolve => {
+    setTimeout(() => {
+      resolve(getRandomDelay(1, 3).toFixed(3));
+    }, getRandomDelay(1000, 3000)); 
+  });
+
+  const promise2 = new Promise(resolve => {
+    setTimeout(() => {
+      resolve(getRandomDelay(1, 3).toFixed(3));
+    }, getRandomDelay(1000, 3000)); 
+  });
+
+  const promise3 = new Promise(resolve => {
+    setTimeout(() => {
+      resolve(getRandomDelay(1, 3).toFixed(3));
+    }, getRandomDelay(1000, 3000));
+  });
+
+  Promise.all([promise1, promise2, promise3])
+    .then(values => {
+      const outputTbody = document.getElementById('output');
+      outputTbody.innerHTML = '';
+		 const totalTime = Math.max(...values).toFixed(3); 
+      values.forEach((time, index) => {
+        const row = outputTbody.insertRow();
+        const cell1 = row.insertCell();
+        const cell2 = row.insertCell();
+        cell1.textContent = `Promise ${index + 1}`;
+        cell2.textContent = time;
+      });
+
+
+      const totalRow = outputTbody.insertRow();
+      const totalCell1 = totalRow.insertCell();
+      const totalCell2 = totalRow.insertCell();
+      totalCell1.textContent = 'Total';
+      totalCell2.textContent = totalTime;
     });
-}
-
-const promises = [
-    createPromise(1),
-    createPromise(2),
-    createPromise(3)
-];
-
-const outputTable = document.getElementById("output");
-
-outputTable.innerHTML = '<tr><td colspan="2">Loading...</td></tr>';
-
-Promise.all(promises).then(results => {
-    
-    outputTable.innerHTML = '';
-
-    let totalTime = 0;
-    results.forEach(result => {
-        totalTime = Math.max(totalTime, result.time); 
-        const row = document.createElement('tr');
-        row.innerHTML = `<td>Promise ${result.promiseNumber}</td><td>${result.time}</td>`; // Use backticks here
-        outputTable.appendChild(row);
-    });
-
-    const totalRow = document.createElement('tr');
-    totalRow.innerHTML = `<td>Total</td><td>${totalTime}</td>`; // Use backticks here
-    outputTable.appendChild(totalRow);
-});
